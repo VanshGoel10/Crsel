@@ -1,11 +1,11 @@
 {
   "builds": [
     {
-      "src": "./index.ts",
+      "src": "server/api/index.ts",
       "use": "@vercel/node"
     },
     {
-      "src": "/(.*)",
+      "src": "client/package.json",
       "use": "@vercel/next"
     }
   ]
