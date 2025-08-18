@@ -20,7 +20,7 @@ const port = process.env.PORT || 3000;
 connectDB();
 
 // Middleware
-app.use(cors());
+app.use(cors({ origin: "https://crsel-client.vercel.app/" }));
 app.use(express.json());
 
 // Routes
