@@ -1,9 +1,13 @@
-
-
-
 {
   "builds": [
-    { "src": "server/api/index.ts", "use": "@vercel/node" },
-    { "src": "client/package.json", "use": "@vercel/next" }
+    {
+      "src": "./index.js",
+      "use": "@vercel/node"
+    },
+    {
+      "src": "/(.*)",
+      "use": "@vercel/next"
+    }
   ]
 }
+  
