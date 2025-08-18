@@ -1,7 +1,8 @@
+
 {
   "builds": [
     {
-      "src": "server/dist/index.js",
+      "src": "server/package.json",
       "use": "@vercel/node"
     },
     {
