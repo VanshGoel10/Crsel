@@ -34,6 +34,13 @@ app.use('/api/contact', contactRoutes);
 // Career routes
 app.use('/api/career', careerRoutes);
 
+app.get("/", (req,res)=>{
+  res.send({
+    activeStatus:true,
+    error:false,
+  })
+})
+
 // Start server
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
