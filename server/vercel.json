@@ -8,6 +8,9 @@
       "src": "client/package.json",
       "use": "@vercel/next"
     }
+  ],
+  "routes": [
+    { "src": "/api/(.*)", "dest": "server/api/index.ts" },
+    { "src": "/(.*)", "dest": "client/$1" }
   ]
 }
-  
