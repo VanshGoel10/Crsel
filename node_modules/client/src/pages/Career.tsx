@@ -1,5 +1,7 @@
 import { motion } from 'framer-motion';
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
+import axios from 'axios';
 
 const Career = () => {
   const [form, setForm] = useState({
@@ -11,6 +13,11 @@ const Career = () => {
     cv: null as File | null,
   });
   const [submitted, setSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState<{
+    type: 'success' | 'error' | null;
+    message: string;
+  }>({ type: null, message: '' });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -23,14 +30,69 @@ const Career = () => {
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitted(true);
-    // Here you would handle the form submission (e.g., send to backend)
+    setIsSubmitting(true);
+    setSubmitStatus({ type: null, message: '' });
+
+    try {
+      const formData = new FormData();
+      formData.append('name', form.name);
+      formData.append('email', form.email);
+      formData.append('skills', form.skills);
+      formData.append('experienceYears', form.experienceYears);
+      formData.append('experienceMonths', form.experienceMonths);
+      if (form.cv) {
+        formData.append('cv', form.cv);
+      }
+
+      const response = await axios.post('http://localhost:3000/api/career/submit', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      });
+      
+      if (response.data.success) {
+        setSubmitStatus({
+          type: 'success',
+          message: 'Thank you for your application! We will get in touch soon.'
+        });
+        setForm({
+          name: '',
+          email: '',
+          skills: '',
+          experienceYears: '',
+          experienceMonths: '',
+          cv: null
+        });
+        setSubmitted(true);
+      }
+    } catch (error: any) {
+      setSubmitStatus({
+        type: 'error',
+        message: error.response?.data?.message || 'Something went wrong. Please try again.'
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900 pt-32 pb-16">
+      {/* Admin Button - Top Right */}
+      <div className="absolute top-36 right-8 z-10">
+        <Link
+          to="/admin"
+          className="inline-flex items-center px-3 py-1.5 text-xs font-medium text-gray-400 hover:text-blue-400 transition-colors duration-200 border border-gray-600 hover:border-blue-400 rounded-md bg-gray-800/50 backdrop-blur-sm"
+        >
+          <svg className="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+          </svg>
+          Admin
+        </Link>
+      </div>
+
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -130,15 +192,28 @@ const Career = () => {
               className="w-full px-4 py-2 rounded bg-gray-900 text-white border border-gray-700 focus:border-blue-400 focus:outline-none"
             />
           </div>
-          <button
-            type="submit"
-            className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded transition-colors"
-          >
-            Submit Application
-          </button>
-          {submitted && (
-            <div className="text-green-400 text-center mt-4">Thank you for applying! We will get in touch soon.</div>
-          )}
+                     {/* Status Message */}
+           {submitStatus.type && (
+             <div className={`p-3 rounded ${
+               submitStatus.type === 'success' 
+                 ? 'bg-green-100 text-green-700 border border-green-300' 
+                 : 'bg-red-100 text-red-700 border border-red-300'
+             }`}>
+               {submitStatus.message}
+             </div>
+           )}
+
+           <button
+             type="submit"
+             disabled={isSubmitting}
+             className={`w-full font-semibold py-3 rounded transition-colors ${
+               isSubmitting
+                 ? 'bg-gray-400 cursor-not-allowed'
+                 : 'bg-blue-600 hover:bg-blue-700'
+             } text-white`}
+           >
+             {isSubmitting ? 'Submitting...' : 'Submit Application'}
+           </button>
         </motion.form>
       </div>
     </div>

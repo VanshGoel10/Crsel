@@ -26,6 +26,15 @@ const Footer = () => {
           <p className="mt-4 text-gray-400 text-sm">
             Crsel provides Zoho solutions, offering expert consulting, seamless integrations, and ongoing support to help your business thrive in the digital age.
           </p>
+          {/* Admin Link */}
+          <div className="mt-4">
+            <Link 
+              to="/admin" 
+              className="text-xs text-gray-500 hover:text-blue-400 transition-colors"
+            >
+              Admin Panel
+            </Link>
+          </div>
           {/* Zoho Authorized Partner Logo */}
           {/* Removed Zoho Authorized Partner logo and placeholder */}
         </div>

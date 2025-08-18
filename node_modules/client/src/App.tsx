@@ -10,6 +10,7 @@ import Services from './pages/Services';
 import Footer from './components/Footer';
 import FloatingContactButton from './components/FloatingContactButton';
 import Career from './pages/Career';
+import Admin from './pages/Admin';
 
 interface ImportMetaEnv {
   readonly VITE_API_URL: string;
@@ -47,6 +48,7 @@ function App() {
             <Route path="/career" element={<Career />} />
             <Route path="/about" element={<About />} />
             <Route path="/contact" element={<Contact />} />
+            <Route path="/admin" element={<Admin />} />
           </Routes>
         </main>
         <Footer />
