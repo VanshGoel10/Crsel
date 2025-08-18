@@ -24,6 +24,7 @@ interface Career {
 }
 
 const Admin = () => {
+  const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://crsel-server.vercel.app/api';
   const [contacts, setContacts] = useState<Contact[]>([]);
   const [careers, setCareers] = useState<Career[]>([]);
   const [loading, setLoading] = useState(true);
@@ -34,7 +35,7 @@ const Admin = () => {
 
   const fetchContacts = async () => {
     try {
-      const response = await axios.get('http://localhost:3000/api/contact/admin/submissions', {
+      const response = await axios.get(`${API_BASE_URL}/contact/admin/submissions`, {
         headers: {
           'x-admin-key': adminKey
         }
@@ -58,7 +59,7 @@ const Admin = () => {
 
   const fetchCareers = async () => {
     try {
-      const response = await axios.get('http://localhost:3000/api/career/admin/applications', {
+      const response = await axios.get(`${API_BASE_URL}/career/admin/applications`, {
         headers: {
           'x-admin-key': adminKey
         }
@@ -88,7 +89,7 @@ const Admin = () => {
 
   const markAsRead = async (id: string) => {
     try {
-      await axios.patch(`http://localhost:3000/api/contact/admin/submissions/${id}/read`, {}, {
+      await axios.patch(`${API_BASE_URL}/contact/admin/submissions/${id}/read`, {}, {
         headers: {
           'x-admin-key': adminKey
         }
@@ -105,7 +106,7 @@ const Admin = () => {
   const deleteContact = async (id: string) => {
     if (window.confirm('Are you sure you want to delete this contact?')) {
       try {
-        await axios.delete(`http://localhost:3000/api/contact/admin/submissions/${id}`, {
+        await axios.delete(`${API_BASE_URL}/contact/admin/submissions/${id}`, {
           headers: {
             'x-admin-key': adminKey
           }
@@ -120,7 +121,7 @@ const Admin = () => {
 
   const markCareerAsRead = async (id: string) => {
     try {
-      await axios.patch(`http://localhost:3000/api/career/admin/applications/${id}/read`, {}, {
+      await axios.patch(`${API_BASE_URL}/career/admin/applications/${id}/read`, {}, {
         headers: {
           'x-admin-key': adminKey
         }
@@ -137,7 +138,7 @@ const Admin = () => {
   const deleteCareer = async (id: string) => {
     if (window.confirm('Are you sure you want to delete this career application?')) {
       try {
-        await axios.delete(`http://localhost:3000/api/career/admin/applications/${id}`, {
+        await axios.delete(`${API_BASE_URL}/career/admin/applications/${id}`, {
           headers: {
             'x-admin-key': adminKey
           }
@@ -152,7 +153,7 @@ const Admin = () => {
 
   const downloadCV = async (id: string, fileName: string) => {
     try {
-      const response = await axios.get(`http://localhost:3000/api/career/admin/applications/${id}/cv`, {
+      const response = await axios.get(`${API_BASE_URL}/career/admin/applications/${id}/cv`, {
         headers: {
           'x-admin-key': adminKey
         },

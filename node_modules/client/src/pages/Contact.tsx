@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 
 const Contact = () => {
+  const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://crsel-server.vercel.app/api';
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -29,7 +30,7 @@ const Contact = () => {
     setSubmitStatus({ type: null, message: '' });
 
     try {
-      const response = await axios.post('http://localhost:3000/api/contact/submit', formData);
+      const response = await axios.post(`${API_BASE_URL}/contact/submit`, formData);
       
       if (response.data.success) {
         setSubmitStatus({

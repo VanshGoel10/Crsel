@@ -22,11 +22,12 @@ interface ImportMeta {
 
 function App() {
   const [health, setHealth] = useState<string>('');
+  const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://crsel-server.vercel.app/api';
 
   useEffect(() => {
     const checkHealth = async () => {
       try {
-        const response = await axios.get(`${import.meta.env.VITE_API_URL}/health`);
+        const response = await axios.get(`${API_BASE_URL}/health`);
         setHealth(response.data.status);
       } catch (error) {
         console.error('Error checking health:', error);

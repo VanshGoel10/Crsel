@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 
 const Career = () => {
+  const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://crsel-server.vercel.app/api';
   const [form, setForm] = useState({
     name: '',
     email: '',
@@ -46,7 +47,7 @@ const Career = () => {
         formData.append('cv', form.cv);
       }
 
-      const response = await axios.post('http://localhost:3000/api/career/submit', formData, {
+      const response = await axios.post(`${API_BASE_URL}/career/submit`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
