@@ -1,9 +1,9 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
-import connectDB from './config/database';
-import contactRoutes from './routes/contact';
-import careerRoutes from './routes/career';
+import connectDB from './src/config/database';
+import contactRoutes from './src/routes/contact';
+import careerRoutes from './src/routes/career';
 
 dotenv.config();
 
